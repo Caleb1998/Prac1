@@ -21,8 +21,8 @@ GPIO.setup(chan_list_in,GPIO.IN)
 binary=list(itertools.product(range(2),repeat=3))
 k=0
  # add rising edge detection on a channel
-GPIO.add_event_detect(40, GPIO.RISING, bouncetime=400)
-GPIO.add_event_detect(38,GPIO.RISING, bouncetime=400)
+GPIO.add_event_detect(40, GPIO.RISING, bouncetime=300)
+GPIO.add_event_detect(38,GPIO.RISING, bouncetime=300)
 #Logic that you write
 def main():
 	def setLEDs():
@@ -52,11 +52,16 @@ def main():
 	def down_pressed():
 		down()
 		setLEDs()
+	def up_pressed():
+		up()
+		setLEDs()
 
 	if GPIO.event_detected(40):
-		print('Down pressed')
+		#print('Down pressed')
+		down_pressed()
 	if GPIO.event_detected(38):
-		print("Up pressed")
+		#print("Up pressed")
+		up_pressed()
 
 # Only run the functions if
 if __name__ == "__main__":
