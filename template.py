@@ -15,12 +15,15 @@ import time
 import itertools
 GPIO.setmode(GPIO.BOARD)
 chan_list_out=[33,35,37]
-GPIO.setup(chan_list_out,GPIO.OUT)
+GPIO.setup(chan_list_out,GPIO.OUT,initial=0)
 chan_list_in = [38,40]
 GPIO.setup(chan_list_in,GPIO.IN)
 binary=list(itertools.product(range(2),repeat=3))
 k=0
-# Logic that you write
+ # add rising edge detection on a channel
+GPIO.add_event_detect(40, GPIO.RISING, bouncetime=400)
+GPIO.add_event_detect(38,GPIO.RISING, bouncetime=400)
+#Logic that you write
 def main():
 	def setLEDs():
 		global k
@@ -46,10 +49,14 @@ def main():
 		k-=1
 		if k==-1:
 			k=7
+	def down_pressed():
+		down()
+		setLEDs()
 
-	setLEDs()
-	down()
-	time.sleep(1)
+	if GPIO.event_detected(40):
+		print('Down pressed')
+	if GPIO.event_detected(38):
+		print("Up pressed")
 
 # Only run the functions if
 if __name__ == "__main__":
