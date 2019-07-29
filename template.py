@@ -22,17 +22,36 @@ binary=list(itertools.product(range(2),repeat=3))
 k=0
 # Logic that you write
 def main():
-#	GPIO.output(chan_list_out,1)
-#	time.sleep(1)
-#	GPIO.output(chan_list_out,0)
-#	time.sleep(1)
-	global k	
-	print(binary[k])
+	def setLEDs():
+		global k
+		if binary[k][2]==0:	#lowest bit
+			GPIO.output(33,0)
+		else:
+			GPIO.output(33,1)
+		if binary[k][1]==0:	#middle bit
+			GPIO.output(35,0)
+		else:
+			GPIO.output(35,1)
+		if binary[k][0]==0:	#highest bit
+			GPIO.output(37,0)
+		else:
+			GPIO.output(37,1)
+	def up():
+		global k
+		k+=1
+		if k==8:
+			k=0
+	def down():
+		global k
+		k-=1
+		if k==-1:
+			k=7
+
+	setLEDs()
+	down()
 	time.sleep(1)
-	k+=1
-	if k==8:
-		k=0
-# Only run the functions if 
+
+# Only run the functions if
 if __name__ == "__main__":
     # Make sure the GPIO is stopped correctly
     try:
